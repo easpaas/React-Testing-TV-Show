@@ -1,5 +1,7 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import { act } from 'react-dom/test-utils';
+
+import { render, waitFor, getAllByText } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
 import {fetchShow as mockFetchShow} from './api/fetchShow';
 import App from './App';
@@ -14,23 +16,21 @@ beforeEach(() => {
 
 test('No show in state renders fetching data', () => {
   const { getByTestId } = render(<App />);
-
   expect(getByTestId(/fetching/i)).toBeInTheDocument();
 })
 
 test('App renders show after fetch of data', async () => {
-  const { getByText, debug } = render(<App />);
+  const { getByText, rerender, findByText, debug } = render(<App />);
 
-  debug();
-  await waitFor(() => {
-    expect(mockFetchShow).toHaveBeenCalledTimes(2)
-    // const dropDown = getByText(/select a season/i);
-    debug();
+  act(() => {
+    render(<App />)
   })
-  
-  // await waitFor(() =>
-   
+  waitFor(() => {
+    expect(mockFetchShow).toHaveBeenCalledTimes(2);
+  })
+  // await waitFor(() => {
+  //   expect(mockFetchShow).toHaveBeenCalledTimes(2);
+  // })
 
-  // )
 })
 
