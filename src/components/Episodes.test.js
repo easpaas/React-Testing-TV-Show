@@ -3,10 +3,7 @@ import { render, waitFor, findByTestId } from "@testing-library/react";
 import {fetchShow as mockFetchShow} from '../api/fetchShow';
 import Episodes from "./Episodes";
 
-jest.mock('../api/fetchShow');
-
 const data = {
-
   "id": 2993,
   "url": "http://www.tvmaze.com/shows/2993/stranger-things",
   "name": "Stranger Things",
@@ -605,19 +602,18 @@ const data = {
   }
 }
 
-test("Episodes renders without erros before fetching data", () => {
+test("Episodes renders without errors before fetching data", () => {
   render(<Episodes episodes={[]} />)
 })
 
-test("Episodes renders without empty episode array", async () => {  
-  const { getByTestId, rerender } = render(<Episodes episodes={[]} />);
 
-  mockFetchShow.mockResolvedValue(data);
+test("Episodes renders without empty episode array", () => {  
+  const { getByText, rerender, debug } = render(<Episodes episodes={[]} />);
+
+  expect(getByText(/episode/i)).toHaveLength(0);
 
   rerender(<Episodes episodes={[data]} />);
-  // expect(getByTestId(/episodeId/i)).toHaveLength(0);
+
+  expect(getByText(/episode/i)).toBeInTheDocument();
 });
 
-// test("Episodes render after API fetch", () => {
-//   // render(<Episodes episodes={[]} />);
-// })
