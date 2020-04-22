@@ -8,9 +8,16 @@ import {data} from './episodeData';
 
 jest.mock('./api/fetchShow');
 
-test('renders without errors', () => {
+test('No show in state renders fetching data', () => {
   mockFetchShow.mockResolvedValue(data);
-  // const {debug} = render(<App />);
+  const { getByTestId, debug } = render(<App />);
+
+  debug();
+
+  expect(getByTestId(/fetching/i)).toBeInTheDocument();
+})
+
+test('dropdown doesnt show seasons', () => {
 
 })
 
